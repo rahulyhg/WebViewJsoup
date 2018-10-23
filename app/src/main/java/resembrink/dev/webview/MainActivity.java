@@ -1,12 +1,15 @@
 package resembrink.dev.webview;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,6 +18,7 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
+    ProgressBar progressBar;
     WebView webview;
     String url="https://github.com/reloadersystem/SocketChat/blob/master/app/src/main/java/resembrink/dev/socketchat/MainFragment.java";
 
@@ -25,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         webview= (WebView) findViewById(R.id.wv_main);
+        progressBar=findViewById(R.id.prg);
+
         new MyAsynTask().execute();
     }
 
@@ -75,17 +81,35 @@ public class MainActivity extends AppCompatActivity {
             webview.getSettings().setSupportZoom(true);
             webview.getSettings().setBuiltInZoomControls(true);
             webview.getSettings().setDisplayZoomControls(false);
-
             webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
             webview.setScrollbarFadingEnabled(false);
 
+
+
             webview.setWebViewClient(new WebViewClient(){
+
+                @Override
+                public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                    super.onPageStarted(view, url, favicon);
+                    progressBar.setVisibility(View.VISIBLE);
+                    setTitle("Loading...");
+                }
+
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
 
                     setDesktopMode(webview, true);
                     view.loadUrl(url);
                     return super.shouldOverrideUrlLoading(view, request);
+                }
+
+
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    progressBar.setVisibility(View.GONE);
+                   //setTitle(view.getTitle());
+                    setTitle("MainFragment.java");
                 }
             });
 
