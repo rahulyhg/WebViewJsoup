@@ -9,6 +9,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
 
 import org.jsoup.Jsoup;
@@ -20,7 +21,13 @@ public class MainActivity extends AppCompatActivity {
 
     ProgressBar progressBar;
     WebView webview;
-    String url="https://github.com/reloadersystem/SocketChat/blob/master/app/src/main/java/resembrink/dev/socketchat/MainFragment.java";
+    //String url="https://github.com/reloadersystem/SocketChat/blob/master/app/src/main/java/resembrink/dev/socketchat/MainFragment.java";
+  //String url="https://www.fcbarcelona.es";
+
+    String url="https://www.google.com.ar";
+
+    //String url="http://lateoriadel-bigbang-latino.blogspot.com/";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,44 @@ public class MainActivity extends AppCompatActivity {
 
         webview= (WebView) findViewById(R.id.wv_main);
         progressBar=findViewById(R.id.prg);
+
+        //webview.getSettings().setJavaScriptEnabled(true);
+        //webview.loadUrl(url);
+
+        /*webview.setWebViewClient(new WebViewClient()
+         {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url)
+            {
+
+                if (!url.contains(url))
+                {
+                    view.loadUrl(url);
+                }
+                return false;
+             }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                progressBar.setVisibility(View.VISIBLE);
+                setTitle("Loading...");
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                progressBar.setVisibility(View.GONE);
+                setTitle(view.getTitle());
+            }
+
+        }
+
+        );*/
+
+
+
+
 
         new MyAsynTask().execute();
     }
@@ -41,26 +86,32 @@ public class MainActivity extends AppCompatActivity {
             Document document = null;
             try {
                 document= Jsoup.connect(url).get();
-                document.getElementsByClass("position-relative js-header-wrapper ").remove();
-                document.getElementsByClass("pagehead repohead instapaper_ignore readability-menu experiment-repo-nav  ").remove();
-                document.getElementsByClass("breadcrumb").remove();
 
-                document.getElementsByClass("position-relative d-flex flex-justify-between pt-6 pb-2 mt-6 f6 text-gray border-top border-gray-light ").remove();
+                //document.getElementsByClass("header section").remove();
 
-                document.getElementsByClass(" btn btn-sm select-menu-button js-menu-target css-truncate").remove();
-                document.getElementsByClass("position-relative").remove();
-                document.getElementsByClass("commit-tease-contributors").remove();
-                document.getElementsByClass("user-mention").remove();
-                document.getElementsByClass("message").remove();
-                document.getElementsByClass("avatar").remove();
-                document.getElementsByClass("signup-prompt-bg rounded-1").remove();
-                document.getElementsByClass("file-navigation").remove();
-                document.getElementsByClass("commit-tease").remove();
-                document.getElementsByClass("file-info").remove();
-                document.getElementsByClass("file-actions").remove();
-                document.getElementsByClass("d-flex flex-justify-center pb-6").remove();
-                document.getElementsByClass("hovercard-aria-description").remove();
-                document.getElementsByClass("file-header").remove();
+                  // document.getElementsByClass("content-block__header__title").remove();
+
+//                document.getElementsByClass("position-relative js-header-wrapper ").remove();
+//                document.getElementsByClass("pagehead repohead instapaper_ignore readability-menu experiment-repo-nav  ").remove();
+//                document.getElementsByClass("breadcrumb").remove();
+//
+//                document.getElementsByClass("position-relative d-flex flex-justify-between pt-6 pb-2 mt-6 f6 text-gray border-top border-gray-light ").remove();
+//
+//                document.getElementsByClass(" btn btn-sm select-menu-button js-menu-target css-truncate").remove();
+//                document.getElementsByClass("position-relative").remove();
+//                document.getElementsByClass("commit-tease-contributors").remove();
+//                document.getElementsByClass("user-mention").remove();
+//                document.getElementsByClass("message").remove();
+//                document.getElementsByClass("avatar").remove();
+//                document.getElementsByClass("signup-prompt-bg rounded-1").remove();
+//                document.getElementsByClass("file-navigation").remove();
+//                document.getElementsByClass("commit-tease").remove();
+//                document.getElementsByClass("file-info").remove();
+//                document.getElementsByClass("file-actions").remove();
+//                document.getElementsByClass("d-flex flex-justify-center pb-6").remove();
+//                document.getElementsByClass("hovercard-aria-description").remove();
+//                document.getElementsByClass("file-header").remove();
+
 
 
 
@@ -81,8 +132,15 @@ public class MainActivity extends AppCompatActivity {
             webview.getSettings().setSupportZoom(true);
             webview.getSettings().setBuiltInZoomControls(true);
             webview.getSettings().setDisplayZoomControls(false);
+
             webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-            webview.setScrollbarFadingEnabled(false);
+            webview.setScrollbarFadingEnabled(true);
+//            webview.setClickable(new ExpandableListView.OnChildClickListener() {
+//                @Override
+//                public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+//                    return false;
+//                }
+//            });
 
 
 
@@ -104,14 +162,31 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
+//              @Override
+//                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                    //quita los banners
+//                    if (!url.contains(url))
+//                    {
+//                        view.loadUrl(url);
+//                    }
+//                    //return true;
+//                    return false;
+//
+//                    }
+
+
+
+
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     super.onPageFinished(view, url);
                     progressBar.setVisibility(View.GONE);
-                   //setTitle(view.getTitle());
-                    setTitle("MainFragment.java");
+                   setTitle(view.getTitle());
+                   // setTitle("MainFragment.java");
                 }
             });
+
+
 
 
 
@@ -141,31 +216,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-
-    /* @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                //quita los banners
-                if (!url.contains(url))
-                {
-                    view.loadUrl(url);
-                }
-                return true;
-
-
-            }*/
-
-
-
                 /*miWebView.loadUrl("javascript:(function() { " +
                         "document.getElementsByTagName('body')[0].style.color = 'red'; " +
                         "})()");*/
-
-    //setDesktopMode( miWebView,false);
-
-
-
 
     @Override
     public void onBackPressed()
@@ -180,15 +233,5 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
-
-
-
-
-
-
-
-
-
 
 }
